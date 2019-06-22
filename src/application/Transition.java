@@ -4,14 +4,14 @@ public class Transition {
 
 	private char symbol;
 	private State initialState;
-	private State finalState;
+	private State nextState;
 	
 	public Transition() {}
 	
 	public Transition(char symbol, State initialState, State finalState) {
 		this.symbol = symbol;
 		this.initialState = initialState;
-		this.finalState = finalState;
+		this.nextState = finalState;
 	}
 	
 	public char getSymbol() {
@@ -30,12 +30,12 @@ public class Transition {
 		this.initialState = initialState;
 	}
 
-	public State getFinalState() {
-		return finalState;
+	public State getNextState() {
+		return nextState;
 	}
 
-	public void setFinalState(State finalState) {
-		this.finalState = finalState;
+	public void setNextState(State nextState) {
+		this.nextState = nextState;
 	}
 
 }

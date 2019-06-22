@@ -1,61 +1,75 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.sun.java_cup.internal.runtime.Symbol;
 
 public class Automata {
 
 	private ArrayList<State> states;
-	private String alphabet;
 	private State initialState;
 	private ArrayList<State> acceptanceStates;
 	private ArrayList<Transition> transitions;
 
 	public Automata() {}
 	
-	public Automata(ArrayList<State> states, String alphabet, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) {
+	public Automata(ArrayList<State> states, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) {
 		this.states = states;
-		this.alphabet = alphabet;
 		this.initialState = initalState;
 		this.acceptanceStates = acceptanceStates;
 		this.transitions = transitions;
 	}
 	
-	public boolean recgonizeWord(String word, int index) {
-		char[] splitedSymbols = getSplitedSymbols(word);
-		char initialSymbol = word.charAt(index);
-		State currentState = this.initialState;
-		if (this.getStateTroughTransition(currentState, initialSymbol) != null) {
-			return this.recgonizeWord(word, index + 1);
-		}
+	public boolean recgonizeWord(String word, int index, State currentState) {
 		
+		// Cadena de entrada termino?
+		if (index == word.length())
+		{
+			for (State acceptanceState : acceptanceStates) 
+			{
+				// Estamos en un estado de aceptacion?
+				if (currentState == acceptanceState) 
+				{
+					System.out.println("Cadena pertenece al lenguaje generado por el automata");
+					return true;
+				} 
+				else 
+				{
+					System.out.println("Cadena NO pertenece al lenguaje generado por el automata");
+					return false;
+				}
+			}
+		}
+		else 
+		{
+			char currentSymbol = word.charAt(index);
+			State nextState = this.getNextStateByTransition(currentState, currentSymbol);
+			// Existe un estado siguiente con dicha transicion?
+			if (nextState != null)
+			{
+				System.out.println("Realizando transicion de Estado: " + currentState.getName() + " con simbolo: " + currentSymbol + " HACIA Estado: " + nextState.getName());
+				return this.recgonizeWord(word, index + 1, nextState);
+			} 
+			else 
+			{
+				System.out.println("Cadena NO pertenece al lenguaje generado por el automata");
+				return false;
+			}
+		}
 		return false;
 	}
 	
 	// Obtiene el estado resultante de una transicion, dado un estado y un simbolo.
 	// Implementacion de la funcion de transicion.
-	private State getStateTroughTransition(State fromState, char symbol) {
-		String fromStateName = fromState.getName();
-		for(int i=0; i < this.transitions.size(); i++) {
-			String transitionStateName = this.transitions.get(i).getInitialState().getName();
-
-			// Si Existe una transicion
-			if(fromStateName.equals(transitionStateName)) 
+	private State getNextStateByTransition(State currentState, char symbol) {
+		for (Transition transition : this.transitions) 
+		{
+			if (transition.getInitialState() == currentState && transition.getSymbol() == symbol)
 			{
-				// Devolvemos el estado resultante de esa transicion
-				return transitions.get(i).getFinalState();
+				return transition.getNextState();
 			}
 		}
 		
-		// Si no existe un transicion retornamos null.
+		// Si no existe una transicion retornamos null.
 		return null;
-	}
-	
-	private char[] getSplitedSymbols(String word) {
-		return word.toCharArray();
-		
 	}
 	
 	public ArrayList<State> getStates() {
@@ -64,14 +78,6 @@ public class Automata {
 
 	public void setStates(ArrayList<State> states) {
 		this.states = states;
-	}
-
-	public String getAlphabet() {
-		return alphabet;
-	}
-
-	public void setAlphabet(String alphabet) {
-		this.alphabet = alphabet;
 	}
 
 	public State getInitialState() {
