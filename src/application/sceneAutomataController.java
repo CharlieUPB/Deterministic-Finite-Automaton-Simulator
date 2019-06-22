@@ -121,6 +121,12 @@ public class sceneAutomataController {
 	@FXML
 	private AnchorPane pane;
 	
+	
+	ArrayList<State> stateArray = new ArrayList<State>();
+	ArrayList<Transition> transitionArray = new ArrayList<Transition>();
+	ArrayList<State> acceptanceStatesArray = new ArrayList<State>();
+	private Automata automata = new Automata(stateArray, null , acceptanceStatesArray, transitionArray);
+	
 	ToggleGroup toggleGroup = new ToggleGroup();
 
 	FileManager fManager = new FileManager();
@@ -186,18 +192,21 @@ public class sceneAutomataController {
 		switch (this.currentEditionType) 
 		{
 			case NEWSTATE:
-				double coordX = event.getX();
-				double coordY = event.getY();
-				System.out.println("Crear circulo.");
-				System.out.println("X: " + event.getX());
-				System.out.println("Y: " + event.getY());
-				
-				Circle circle = new Circle(coordX,coordY, 25, javafx.scene.paint.Color.BLUE);
-				
-				this.drawAreaAnchorPane.getChildren().add(circle);
+				this.createNewState(event);
 			break;
 			
 			case NEWTRANSITION:
+				double coordX = event.getX();
+				double coordY = event.getY();
+				if(this.getStateByCoords(coordX, coordY) != null)
+				{
+					System.out.println("Clickeaste un state");
+				}
+				else 
+				{
+					System.out.println("NO ES UN STATE.");
+        }
+        
 				if(event.getClickCount() == 2)
 				{
 					createNewTransition(event);
@@ -212,6 +221,41 @@ public class sceneAutomataController {
 			break;
 		}
 		
+	}
+	
+	public State getStateByCoords(double coordX, double coordY)
+	{
+		return this.automata.getStateByCoords(coordX, coordY);
+	}
+	
+	public void createNewState(MouseEvent event)
+	{
+		double coordX = event.getX();
+		double coordY = event.getY();
+		if (this.isStateInsidePane(coordX, coordY))
+		{
+			if (!this.automata.DoesStateCollision(coordX, coordY))
+			{
+				State state = new State("testy", coordX, coordY);
+				this.stateArray.add(state);
+				Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
+				this.drawAreaAnchorPane.getChildren().add(circle);
+			}
+		}
+	}
+	
+	private boolean isStateInsidePane(double coordX, double coordY) 
+	{
+		if (this.drawAreaAnchorPane.getWidth() > (coordX + State.RADIUS) && 
+			this.drawAreaAnchorPane.getHeight() > (coordY + State.RADIUS) &&
+		    (coordX - State.RADIUS >= 0) && (coordY - State.RADIUS >= 0))
+		{
+			return true;
+		} 
+		else 
+		{
+			return false;
+		}
 	}
 	
 	public void setEditionVariableState()

@@ -5,6 +5,7 @@ public class State {
 	private String name;
 	private Double xCoord;
 	private Double yCoord;
+	static int RADIUS = 25;
 	
 	public State(String name, Double xCoord, Double yCoord) 
 	{
