@@ -9,6 +9,8 @@ public class Automata {
 	private ArrayList<State> acceptanceStates;
 	private ArrayList<Transition> transitions;
 	
+	public Automata() {}
+	
 	public Automata(ArrayList<State> states, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) 
 	{
 		this.states = states;
@@ -70,6 +72,45 @@ public class Automata {
 		}
 		
 		// Si no existe una transicion retornamos null.
+		return null;
+	}
+	
+	public boolean DoesStateCollision(double xCoord, double yCoord)
+	{
+		double x1 = xCoord;
+		double y1 = yCoord;
+		
+		for (State state : this.states) {
+			
+			double xDif = x1 - state.getxCoord();
+			double yDif = y1 - state.getyCoord();
+			double distanceSquared = xDif * xDif + yDif * yDif;
+			boolean collision = distanceSquared < (State.RADIUS + State.RADIUS) * (State.RADIUS + State.RADIUS);
+			if (collision)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public State getStateByCoords(double xCoord, double yCoord) 
+	{
+		double x1 = xCoord;
+		double y1 = yCoord;
+		
+		for (State state : this.states) 
+		{
+			double x0 = state.getxCoord();
+			double y0 = state.getyCoord();
+			boolean pointIsInside = (Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0)) ) <= ( State.RADIUS );
+			
+			if (pointIsInside)
+			{
+				System.out.println("Found the corresponding state");
+				return state;
+			}
+		}
 		return null;
 	}
 	
