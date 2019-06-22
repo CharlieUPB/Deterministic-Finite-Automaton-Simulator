@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="pane" prefHeight="690.0" prefWidth="950.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.sceneAutomataController">
+   <children>
+      <TabPane fx:id="mainTab" prefHeight="690.0" prefWidth="950.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="formalDefinitionTab" text="Formal Definition">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="slider">
+                     <children>
+                        <Label layoutX="172.0" layoutY="63.0" styleClass="mainLabel" text="CONJUNTOS" />
+                        <Label layoutX="116.0" layoutY="120.0" text="CONJUNTO DE ESTADOS" />
+                        <Label layoutX="123.0" layoutY="197.0" text="ALFABETO DE ENTRADA" />
+                        <Label layoutX="124.0" layoutY="267.0" text="ALFABETO DE LA PILA" />
+                        <Label layoutX="139.0" layoutY="337.0" text="ESTADO INICIAL" />
+                        <Label layoutX="115.0" layoutY="410.0" text="SIMBOLO INICIAL DE LA PILA" />
+                        <Label layoutX="90.0" layoutY="149.0" text="Q: " />
+                        <TextField fx:id="inputConjuntoEstados" layoutX="114.0" layoutY="145.0" promptText="CONJUNTO FINITO DE ESTADOS" />
+                        <TextField fx:id="inputAlfabetoEntrada" layoutX="113.0" layoutY="218.0" promptText="ALFABETO DE ENTRADA" />
+                        <TextField fx:id="inputAfabetoPila" layoutX="109.0" layoutY="289.0" promptText="ALFABETO DE LA PILA" />
+                        <TextField fx:id="inputEstadoInicial" layoutX="109.0" layoutY="359.0" promptText="ESTADO INICIAL" />
+                        <TextField fx:id="inputSimboloIniPila" layoutX="113.0" layoutY="437.0" promptText="SIMBOLO INICIAL DE LA PILA" />
+                        <TextField fx:id="inputEstaosAcept" layoutX="109.0" layoutY="512.0" promptText="CONJUNTO DE ESTADOS ACEPTADOS" />
+                        <Label layoutX="91.0" layoutY="222.0" styleClass="primary" text="X: " />
+                        <Label layoutX="91.0" layoutY="293.0" text="P: " />
+                        <Label layoutX="84.0" layoutY="363.0" text="q0: " />
+                        <Label layoutX="88.0" layoutY="441.0" text="Z0: " />
+                        <Label layoutX="116.0" layoutY="486.0" text="CONJUNTO DE ESTADOS ACEPTADOS" />
+                        <Label layoutX="88.0" layoutY="516.0" text="F: " />
+                       
+                        <Button fx:id="btnConjEstados" layoutX="326.0" layoutY="145.0" mnemonicParsing="false" onAction="#read_Q" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="btnAlfabetoEntrada" layoutX="326.0" layoutY="218.0" mnemonicParsing="false" onAction="#read_X" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="inputAlfabetoPila" layoutX="326.0" layoutY="289.0" mnemonicParsing="false" onAction="#read_P" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="btnEstadoInicial" layoutX="326.0" layoutY="359.0" mnemonicParsing="false" onAction="#read_q0" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="btnSimboloIniPila" layoutX="326.0" layoutY="437.0" mnemonicParsing="false" onAction="#read_Z0" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="btnEstadosAcept" layoutX="326.0" layoutY="512.0" mnemonicParsing="false" onAction="#read_F" text="Add">
+                           <styleClass>
+                              <String fx:value="primary" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Label layoutX="632.0" layoutY="63.0" styleClass="mainLabel" text="RECENT FILES" />
+                        <ListView fx:id="recentFilesList" layoutX="504.0" layoutY="94.0" onMouseClicked="#getFile" prefHeight="485.0" prefWidth="384.0" styleClass="slider" />
+                       
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="automataTab" onSelectionChanged="#reRender" text="Automata">
+            <content>
+              <AnchorPane fx:id="inputCadenaEntrada" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+
+                        <Button fx:id="btnAddRule" layoutX="224.0" layoutY="154.0" mnemonicParsing="false" onAction="#addRule" text="Add">
+                           <styleClass>
+                              <String fx:value="action-btn" />
+                              <String fx:value="primary" />
+                           </styleClass></Button>
+                        <Button fx:id="btnDeleteRule" layoutX="230.0" layoutY="484.0" mnemonicParsing="false" onAction="#DeleteRule" text="Delete">
+                           <styleClass>
+                              <String fx:value="danger" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Button fx:id="btnEditRule" layoutX="132.0" layoutY="484.0" mnemonicParsing="false" onAction="#EditRule" text="Edit">
+                           <styleClass>
+                              <String fx:value="info" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+
+                        <Label layoutX="216.0" layoutY="76.0" text="ADD RULES" />
+                        <ChoiceBox fx:id="inputActualState" layoutX="12.0" layoutY="115.0" prefHeight="25.0" prefWidth="96.0" />
+                        <ChoiceBox fx:id="inputCE" layoutX="123.0" layoutY="115.0" prefHeight="25.0" prefWidth="64.0" />
+                        <ChoiceBox fx:id="inputEstadoFuturo" layoutX="304.0" layoutY="116.0" prefHeight="25.0" prefWidth="95.0" />
+                        <ChoiceBox fx:id="inputPilaActual" layoutX="206.0" layoutY="115.0" prefHeight="25.0" prefWidth="81.0" />
+                        <ChoiceBox fx:id="inputPilaFutura" layoutX="419.0" layoutY="115.0" prefHeight="25.0" prefWidth="82.0" />
+                        <ChoiceBox fx:id="inputRuleEdit" layoutX="14.0" layoutY="433.0" prefHeight="25.0" prefWidth="371.0" />
+                        <Label fx:id="editDeleteRuleLabel" layoutX="134.0" layoutY="391.0" text="EDIT OR DELETE RULE" />
+                        <ListView fx:id="rulesInUseShow" layoutX="460.0" layoutY="190.0" prefHeight="450.0" prefWidth="300.0" styleClass="slider" />
+                        <Label layoutX="574.0" layoutY="158.0" text="RULES IN USE" />
+                        <Label layoutX="848.0" layoutY="158.0" text="STACK" />
+                        <MenuBar fx:id="topMenu" layoutX="6.0" styleClass="context-menu">
+                          <menus>
+                            <Menu mnemonicParsing="false" text="File">
+                              <items>
+                                    <MenuItem fx:id="newFile" mnemonicParsing="false" onAction="#createNewFile" text="new File" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As" />
+                                    <Menu fx:id="menuOpenFile" mnemonicParsing="false" onAction="#loadFile" text="Open File" />
+                              </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" text="Edit">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" onAction="#showEditComponent" text="Edit Or Delete Rules" />
+                                 </items></Menu>
+                            <Menu mnemonicParsing="false" text="Help">
+                              <items>
+                                <MenuItem mnemonicParsing="false" onAction="#showAbout" text="About" />
+                              </items>
+                            </Menu>
+                          </menus>
+                        </MenuBar>
+                        <TextField fx:id="inputString" layoutX="94.0" layoutY="270.0" promptText="Cadena de entrada" />
+                        <Button fx:id="btnStart" layoutX="293.0" layoutY="270.0" mnemonicParsing="false" onAction="#simulate" text="Start">
+                           <styleClass>
+                              <String fx:value="success" />
+                              <String fx:value="action-btn" />
+                           </styleClass></Button>
+                        <Label fx:id="initStack" layoutX="860.0" layoutY="586.0" styleClass="mainLabel" text="Z0" />
+                        <Label layoutX="553.0" layoutY="76.0" text="CURRENT INPUT:" />
+                        <Label fx:id="projectName" layoutX="539.0" layoutY="22.0" styleClass="mainLabel" text="FileName" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
