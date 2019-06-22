@@ -6,9 +6,8 @@ public class Transition {
 	private State initialState;
 	private State nextState;
 	
-	public Transition() {}
-	
-	public Transition(char symbol, State initialState, State finalState) {
+	public Transition(char symbol, State initialState, State finalState) 
+	{
 		this.symbol = symbol;
 		this.initialState = initialState;
 		this.nextState = finalState;

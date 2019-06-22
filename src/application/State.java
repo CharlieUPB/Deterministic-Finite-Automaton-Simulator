@@ -6,9 +6,8 @@ public class State {
 	private Double xCoord;
 	private Double yCoord;
 	
-	public State() {}
-	
-	public State(String name, Double xCoord, Double yCoord) {
+	public State(String name, Double xCoord, Double yCoord) 
+	{
 		this.name = name;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;

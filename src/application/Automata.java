@@ -8,17 +8,17 @@ public class Automata {
 	private State initialState;
 	private ArrayList<State> acceptanceStates;
 	private ArrayList<Transition> transitions;
-
-	public Automata() {}
 	
-	public Automata(ArrayList<State> states, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) {
+	public Automata(ArrayList<State> states, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) 
+	{
 		this.states = states;
 		this.initialState = initalState;
 		this.acceptanceStates = acceptanceStates;
 		this.transitions = transitions;
 	}
 	
-	public boolean recgonizeWord(String word, int index, State currentState) {
+	public boolean recgonizeWord(String word, int index, State currentState) 
+	{
 		
 		// Cadena de entrada termino?
 		if (index == word.length())
@@ -59,7 +59,8 @@ public class Automata {
 	
 	// Obtiene el estado resultante de una transicion, dado un estado y un simbolo.
 	// Implementacion de la funcion de transicion.
-	private State getNextStateByTransition(State currentState, char symbol) {
+	private State getNextStateByTransition(State currentState, char symbol) 
+	{
 		for (Transition transition : this.transitions) 
 		{
 			if (transition.getInitialState() == currentState && transition.getSymbol() == symbol)

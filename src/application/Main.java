@@ -10,7 +10,8 @@ import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) 
+	{
 		try {
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root,400,400);
@@ -22,12 +23,14 @@ public class Main extends Application {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		mockTest();
 		launch(args);
 	}
 	
-	private static void mockTest() {
+	private static void mockTest() 
+	{
 		
 		State qoState = new State("qo",100.0,100.0);
 		State q1State = new State("q1",100.0,50.0);
