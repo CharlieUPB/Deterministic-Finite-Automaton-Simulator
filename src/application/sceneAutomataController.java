@@ -26,6 +26,8 @@ import javafx.beans.value.ObservableValue;
 
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -49,11 +51,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 
@@ -135,6 +139,8 @@ public class sceneAutomataController {
 	}
 	
 	editionType currentEditionType;
+	
+	int numClicksTransition = 0;
 
 	public sceneAutomataController()
 	{
@@ -181,7 +187,7 @@ public class sceneAutomataController {
 	
 	
 	@FXML
-	public void createStateOnMouseClicked(MouseEvent event)
+	public void createAutomatonOnMouseClicked(MouseEvent event)
 	{
 		switch (this.currentEditionType) 
 		{
@@ -199,6 +205,11 @@ public class sceneAutomataController {
 				else 
 				{
 					System.out.println("NO ES UN STATE.");
+        }
+        
+				if(event.getClickCount() == 2)
+				{
+					createNewTransition(event);
 				}
 			break;
 				
@@ -263,12 +274,100 @@ public class sceneAutomataController {
 	}
 	
 	
-	
-	
+
+	public void createNewTransition(MouseEvent event) 
+	{
+		double xIni = 0;
+		double yIni = 0;
+		double xFinal = 0;
+		double yFinal = 0;
+		
+		if(event.getClickCount() == 1)
+		{
+			xIni = event.getX();
+			yIni = event.getY();
+		}
+		else if (event.getClickCount() == 2) 
+		{
+			xFinal = event.getX();
+			yFinal = event.getY();
+		}
+
+
+	    CubicCurve curve1 = new CubicCurve(xIni, yIni, 125, 225, 325, 225, xFinal, yFinal);
+	    curve1.setStroke(javafx.scene.paint.Color.BLACK);
+	    curve1.setStrokeWidth(1);
+	    curve1.setFill( null);
+
+	    double size=Math.max(curve1.getBoundsInLocal().getWidth(),
+	                         curve1.getBoundsInLocal().getHeight());
+	    double scale=size/4d;
+
+	    Point2D ori=eval(curve1,0);
+	    Point2D tan=evalDt(curve1,0).normalize().multiply(scale);
+	    Path arrowIni=new Path();
+	    arrowIni.getElements().add(new MoveTo(ori.getX()+0.2*tan.getX()-0.2*tan.getY(),
+	                                        ori.getY()+0.2*tan.getY()+0.2*tan.getX()));
+	    arrowIni.getElements().add(new LineTo(ori.getX(), ori.getY()));
+	    arrowIni.getElements().add(new LineTo(ori.getX()+0.2*tan.getX()+0.2*tan.getY(),
+	                                        ori.getY()+0.2*tan.getY()-0.2*tan.getX()));
+
+	    ori=eval(curve1,1);
+	    tan=evalDt(curve1,1).normalize().multiply(scale);
+	    Path arrowEnd=new Path();
+	    arrowEnd.getElements().add(new MoveTo(ori.getX()-0.2*tan.getX()-0.2*tan.getY(),
+	                                        ori.getY()-0.2*tan.getY()+0.2*tan.getX()));
+	    arrowEnd.getElements().add(new LineTo(ori.getX(), ori.getY()));
+	    arrowEnd.getElements().add(new LineTo(ori.getX()-0.2*tan.getX()+0.2*tan.getY(),
+	                                        ori.getY()-0.2*tan.getY()-0.2*tan.getX()));
+	    
+	    this.drawAreaAnchorPane.getChildren().addAll(curve1, arrowIni, arrowEnd);
+	    
+	}
+
+	/**
+	 * Evaluate the cubic curve at a parameter 0<=t<=1, returns a Point2D
+	 * @param c the CubicCurve 
+	 * @param t param between 0 and 1
+	 * @return a Point2D 
+	 */
+	private Point2D eval(CubicCurve c, float t){
+	    Point2D p=new Point2D(Math.pow(1-t,3)*c.getStartX()+
+	            3*t*Math.pow(1-t,2)*c.getControlX1()+
+	            3*(1-t)*t*t*c.getControlX2()+
+	            Math.pow(t, 3)*c.getEndX(),
+	            Math.pow(1-t,3)*c.getStartY()+
+	            3*t*Math.pow(1-t, 2)*c.getControlY1()+
+	            3*(1-t)*t*t*c.getControlY2()+
+	            Math.pow(t, 3)*c.getEndY());
+	    return p;
+	}
+
+	/**
+	 * Evaluate the tangent of the cubic curve at a parameter 0<=t<=1, returns a Point2D
+	 * @param c the CubicCurve 
+	 * @param t param between 0 and 1
+	 * @return a Point2D 
+	 */
+	private Point2D evalDt(CubicCurve c, float t){
+	    Point2D p=new Point2D(-3*Math.pow(1-t,2)*c.getStartX()+
+	            3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlX1()+
+	            3*((1-t)*2*t-t*t)*c.getControlX2()+
+	            3*Math.pow(t, 2)*c.getEndX(),
+	            -3*Math.pow(1-t,2)*c.getStartY()+
+	            3*(Math.pow(1-t, 2)-2*t*(1-t))*c.getControlY1()+
+	            3*((1-t)*2*t-t*t)*c.getControlY2()+
+	            3*Math.pow(t, 2)*c.getEndY());
+	    return p;
+	}
 	
 	
 	
 
+	
+	
+	
+	
 
 	//Called when openFile from menu is clicked
 
