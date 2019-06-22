@@ -115,6 +115,7 @@ public class sceneAutomataController {
 	
 	ToggleGroup toggleGroup = new ToggleGroup();
 
+	FileManager fManager = new FileManager();
 
 	public sceneAutomataController()
 	{
