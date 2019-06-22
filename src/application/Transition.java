@@ -2,23 +2,23 @@ package application;
 
 public class Transition {
 
-	private String symbol;
+	private char symbol;
 	private State initialState;
 	private State finalState;
 	
 	public Transition() {}
 	
-	public Transition(String symbol, State initialState, State finalState) {
+	public Transition(char symbol, State initialState, State finalState) {
 		this.symbol = symbol;
 		this.initialState = initialState;
 		this.finalState = finalState;
 	}
 	
-	public String getSymbol() {
+	public char getSymbol() {
 		return symbol;
 	}
 
-	public void setSymbol(String symbol) {
+	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
 

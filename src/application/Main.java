@@ -35,10 +35,10 @@ public class Main extends Application {
 		State q1State = new State("q1",100.0,50.0);
 		State q2State = new State("q2",200.0,100.0);
 		
-		Transition oneTransition = new Transition("b", qoState, q2State);
-		Transition twoTransition = new Transition("a", qoState, q1State);
-		Transition threeTransition = new Transition("a", q1State, q1State);
-		Transition fourTransition = new Transition("b", q1State, q2State);
+		Transition oneTransition = new Transition('b', qoState, q2State);
+		Transition twoTransition = new Transition('a', qoState, q1State);
+		Transition threeTransition = new Transition('a', q1State, q1State);
+		Transition fourTransition = new Transition('b', q1State, q2State);
 		
 		ArrayList<State> stateArray = new ArrayList<State>();
 		stateArray.add(qoState);
@@ -54,14 +54,14 @@ public class Main extends Application {
 		ArrayList<State> acceptanceStatesArray = new ArrayList<State>();
 		acceptanceStatesArray.add(q2State);
 		
-		String[] alphabet = {"a","b"};
+		String alphabet = "ab";
 		
 		
-		Automata a1 = new Automata(stateArray, alphabet, qoState, acceptanceStatesArray);;
+		Automata a1 = new Automata(stateArray, alphabet, qoState, acceptanceStatesArray, trasitionArray);
 		
 		String word = "aab";
 		
-		System.out.println("The word " + word + " belongs to the automata: " + a1.recgonizeWord(word));
+		System.out.println("The word " + word + " belongs to the automata: " + a1.recgonizeWord(word, 0));
 		
 	}
 }
