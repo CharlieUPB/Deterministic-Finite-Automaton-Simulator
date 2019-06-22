@@ -4,6 +4,8 @@ package application;
 
 import com.sun.javafx.css.Rule;
 import com.sun.net.httpserver.Authenticator.Success;
+import com.sun.prism.paint.Color;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,7 +46,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.*;
 import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -116,6 +120,15 @@ public class sceneAutomataController {
 	ToggleGroup toggleGroup = new ToggleGroup();
 
 	FileManager fManager = new FileManager();
+	
+	private enum editionType
+	{
+		NEWSTATE, 
+		NEWTRANSITION,
+		DELETE;
+	}
+	
+	editionType currentEditionType;
 
 	public sceneAutomataController()
 	{
@@ -155,6 +168,64 @@ public class sceneAutomataController {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	@FXML
+	public void createStateOnMouseClicked(MouseEvent event)
+	{
+		switch (this.currentEditionType) 
+		{
+			case NEWSTATE:
+				double coordX = event.getX();
+				double coordY = event.getY();
+				System.out.println("Crear circulo.");
+				System.out.println("X: " + event.getX());
+				System.out.println("Y: " + event.getY());
+				
+				Circle circle = new Circle(coordX,coordY, 25, javafx.scene.paint.Color.BLUE);
+				
+				this.drawAreaAnchorPane.getChildren().add(circle);
+			break;
+			
+			case NEWTRANSITION:
+				
+			break;
+				
+			case DELETE:
+				
+			break;
+
+			default:
+			break;
+		}
+		
+	}
+	
+	public void setEditionVariableState()
+	{
+		this.currentEditionType = editionType.NEWSTATE;
+	}
+	
+	public void setEditionVariableTransition()
+	{
+		this.currentEditionType = editionType.NEWTRANSITION;
+	}
+	
+	public void setEditionVariableDelete()
+	{
+		this.currentEditionType = editionType.DELETE;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 
 	//Called when openFile from menu is clicked

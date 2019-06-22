@@ -54,18 +54,18 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="newStateButton" layoutX="839.0" layoutY="110.0" mnemonicParsing="false" text="Estado">
+                        <Button fx:id="newStateButton" layoutX="839.0" layoutY="110.0" mnemonicParsing="false" onAction="#setEditionVariableState" text="Estado">
                            <styleClass>
                               <String fx:value="primary" />
                               <String fx:value="action-btn" />
                            </styleClass></Button>
-                        <Button fx:id="newTransitionButton" layoutX="838.0" layoutY="184.0" mnemonicParsing="false" text="Transicion">
+                        <Button fx:id="newTransitionButton" layoutX="838.0" layoutY="184.0" mnemonicParsing="false" onAction="#setEditionVariableTransition" text="Transicion">
                            <styleClass>
                               <String fx:value="primary" />
                               <String fx:value="action-btn" />
                            </styleClass></Button>
-                        <AnchorPane fx:id="drawAreaAnchorPane" layoutX="25.0" layoutY="43.0" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
-                        <Button fx:id="deleteButton" layoutX="840.0" layoutY="265.0" mnemonicParsing="false" text="Delete">
+                        <AnchorPane fx:id="drawAreaAnchorPane" layoutX="25.0" layoutY="43.0" onMouseClicked="#createStateOnMouseClicked" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
+                        <Button fx:id="deleteButton" layoutX="840.0" layoutY="265.0" mnemonicParsing="false" onAction="#setEditionVariableDelete" text="Delete">
                            <styleClass>
                               <String fx:value="danger" />
                               <String fx:value="action-btn" />
