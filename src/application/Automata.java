@@ -1,16 +1,18 @@
 package application;
 
+import java.util.ArrayList;
+
 public class Automata {
 
-	private State[] states;
+	private ArrayList<State> states;
 	private String[] alphabet;
 	private State initialState;
-	private State[] acceptanceStates;
+	private ArrayList<State> acceptanceStates;
 	
 	
 	public Automata() {}
 	
-	public Automata(State[] states, String[] alphabet, State initalState, State[] acceptanceStates) {
+	public Automata(ArrayList<State> states, String[] alphabet, State initalState, ArrayList<State> acceptanceStates) {
 		this.states = states;
 		this.alphabet = alphabet;
 		this.initialState = initalState;
@@ -21,11 +23,11 @@ public class Automata {
 		return false;
 	}
 	
-	public State[] getStates() {
+	public ArrayList<State> getStates() {
 		return states;
 	}
 
-	public void setStates(State[] states) {
+	public void setStates(ArrayList<State> states) {
 		this.states = states;
 	}
 
@@ -45,11 +47,11 @@ public class Automata {
 		this.initialState = initialState;
 	}
 
-	public State[] getAcceptanceStates() {
+	public ArrayList<State> getAcceptanceStates() {
 		return acceptanceStates;
 	}
 
-	public void setAcceptanceStates(State[] acceptanceStates) {
+	public void setAcceptanceStates(ArrayList<State> acceptanceStates) {
 		this.acceptanceStates = acceptanceStates;
 	}
 
