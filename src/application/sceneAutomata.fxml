@@ -64,7 +64,7 @@
                               <String fx:value="primary" />
                               <String fx:value="action-btn" />
                            </styleClass></Button>
-                        <AnchorPane fx:id="drawAreaAnchorPane" layoutX="25.0" layoutY="43.0" onMouseClicked="#createStateOnMouseClicked" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
+                        <AnchorPane fx:id="drawAreaAnchorPane" layoutX="25.0" layoutY="43.0" onMouseClicked="#createAutomatonOnMouseClicked" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
                         <Button fx:id="deleteButton" layoutX="840.0" layoutY="265.0" mnemonicParsing="false" onAction="#setEditionVariableDelete" text="Delete">
                            <styleClass>
                               <String fx:value="danger" />
