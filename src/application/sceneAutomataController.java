@@ -35,6 +35,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -97,7 +98,9 @@ public class sceneAutomataController {
 	@FXML
 	private ListView recentFilesList;
 
-
+	@FXML
+	private Tab crearAutomataTab;
+	
 	@FXML 
 	private Tab automataTab;
 
@@ -124,16 +127,9 @@ public class sceneAutomataController {
 	private Button btnStart;
 
 	@FXML
-	private AnchorPane inputCadenaEntrada;
-
-	@FXML
 	private AnchorPane pane;
 
-
-	ArrayList<State> stateArray = new ArrayList<State>();
-	ArrayList<Transition> transitionArray = new ArrayList<Transition>();
-	ArrayList<State> acceptanceStatesArray = new ArrayList<State>();
-	private Automata automata = new Automata(stateArray, null , acceptanceStatesArray, transitionArray);
+	private Automata automata = new Automata();
 
 	ToggleGroup toggleGroup = new ToggleGroup();
 
@@ -182,11 +178,6 @@ public class sceneAutomataController {
 		case NEWTRANSITION:
 			this.createNewTransition(event);
 			break;
-
-		case DELETE:
-
-			break;
-
 		default:
 			break;
 		}
@@ -209,12 +200,12 @@ public class sceneAutomataController {
 					{
 						this.stateName = name;
 						State state = new State(this.stateName, coordX, coordY);
-						this.stateArray.add(state);
+						this.automata.addState(state);
 						this.drawState(state);
 					} 
 					else 
 					{
-						this.ErrorAlertMessage("Input no valido", "No es posible tener nombres de estados duplicados.");
+						this.ErrorAlertMessage("ERROR!" , "Input no valido", "No es posible tener nombres de estados duplicados.");
 					}
 				}
 			}
@@ -252,12 +243,12 @@ public class sceneAutomataController {
 					{
 						this.transitionSymbol = name.charAt(0);
 						Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState, this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY);
-						this.transitionArray.add(transition);
+						this.automata.addTransition(transition);
 						this.drawTransition(transition);
 					}
 					else 
 					{
-						this.ErrorAlertMessage("Input no valido en un AFD", "No es posible tener el mismo simbolo que te lleve a distintos estados en un AFD.");
+						this.ErrorAlertMessage("ERROR!" , "Input no valido en un AFD", "No es posible tener el mismo simbolo que te lleve a distintos estados en un AFD.");
 					}
 				}
 				this.numberOfTransitionClicks = 0;
@@ -296,9 +287,14 @@ public class sceneAutomataController {
 		this.numberOfTransitionClicks = 0;
 	}
 
-	public void setEditionVariableDelete()
+	public void onAutomataDelete()
 	{
-		this.currentEditionType = editionType.DELETE;
+		boolean deleteWasAccepted = this.acceptConfirmationDialog("Confirmacion", "Esta seguro que desea borrar el automata creado?", "Si sus cambios no fueron guardados, todo su proceso sera perdido.");
+		if (deleteWasAccepted)
+		{
+			this.automata = new Automata();
+			this.drawAreaAnchorPane.getChildren().clear();
+		}
 	}
 
 	public State getStateByCoords(double coordX, double coordY)
@@ -341,7 +337,7 @@ public class sceneAutomataController {
 			nameTransition = result.get();
 			if (nameTransition.length() > 1 || nameTransition.equals(" "))
 			{
-				this.ErrorAlertMessage("Simbolo Invalido", "El simbolo de una transicion debe ser un caracter");
+				this.ErrorAlertMessage("ERROR! ", "Simbolo Invalido", "El simbolo de una transicion debe ser un caracter");
 				nameTransition = "";
 			}
 		}
@@ -481,9 +477,15 @@ public class sceneAutomataController {
 
 	@FXML 
 	public void createNewFile() {
-		//this.automata = new Automata();
+		this.automata = new Automata();
 		this.inputString.setText("");
-		this.mainTab.getSelectionModel().selectFirst();
+		boolean deleteWasAccepted = this.acceptConfirmationDialog("Confirmacion", "Esta seguro que desea crear un nuevo automata?", "Si sus cambios no fueron guardados, todo su proceso sera perdido.");
+		if (deleteWasAccepted)
+		{
+			this.automata = new Automata();
+			this.drawAreaAnchorPane.getChildren().clear();
+		}
+		
 	}
 	
 	// Called when save file is called.
@@ -540,47 +542,51 @@ public class sceneAutomataController {
 	// ANIMATION RELATED METHODS
 
 	@FXML 
-	public void simulate() {
+	public void onStartClicked() {
 
 		if(this.btnStart.getText().equals("Start")) {
-			this.topMenu.setDisable(true);
-			this.inicioTab.setDisable(true);
-			this.inputString.setDisable(true);
-			this.btnStart.getStyleClass().set(1, "danger");
-			this.btnStart.setText("Stop");
+			
+			this.onStartButton();
+			
+			String wordToTest = this.inputString.getText();
+			
+			boolean wordBelongsToAFD = this.automata.recgonizeWord(wordToTest, 0, this.automata.getInitialState());
 
-			// TEST WORD
-			//System.out.println(possible);
-			if(true) {
-				this.animate();
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("ERROR!");
-				alert.setHeaderText("NO SE ENCONTRO SOLUCION");
-				alert.setContentText("La cadena de entrada no pertenece al lenguaje");
-				alert.showAndWait();
-				this.topMenu.setDisable(false);
-				this.inicioTab.setDisable(false);
-				this.inputString.setDisable(false);
-				this.btnStart.getStyleClass().set(1, "success");
-				this.btnStart.setText("Start");
+			if(wordBelongsToAFD) 
+			{
+				this.successMessageAlert();
+			} 
+			else 
+			{
+				this.ErrorAlertMessage("ERROR!","NO SE ENCONTRO SOLUCION", "La cadena de entrada no pertenece al lenguaje generado por el automata");
+				this.onStopButton();
 			}
-		} else {
-			this.topMenu.setDisable(false);
-			this.inicioTab.setDisable(false);
-			this.inputString.setDisable(false);
-			this.btnStart.getStyleClass().set(1, "success");
-			this.btnStart.setText("Start");
+		} 
+		else 
+		{
+			this.onStopButton();
 		}
 
 
 	}
-
-
-	private void animate() {
-
+	
+	private void onStartButton()
+	{
+		this.inicioTab.setDisable(true);
+		this.crearAutomataTab.setDisable(true);
+		this.inputString.setDisable(true);
+		this.btnStart.getStyleClass().set(1, "danger");
+		this.btnStart.setText("Stop");
 	}
 	
+	private void onStopButton()
+	{
+		this.inicioTab.setDisable(false);
+		this.inputString.setDisable(false);
+		this.crearAutomataTab.setDisable(false);
+		this.btnStart.getStyleClass().set(1, "success");
+		this.btnStart.setText("Start");
+	}
 	
 	// MODALS RELATED METHODS.
 	@FXML
@@ -597,12 +603,29 @@ public class sceneAutomataController {
 
 		Platform.runLater(alert::showAndWait);
 	}
+	
+	
+	public boolean acceptConfirmationDialog(String title, String headerText, String contentText) 
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
+		
+		Optional<ButtonType> result = alert.showAndWait();
+	
+		if (result.get() == ButtonType.OK)
+		{
+			return true;
+		}
+		return false;
+	}
 
 
-	public void ErrorAlertMessage(String headerText, String contentText)
+	public void ErrorAlertMessage(String titleText, String headerText, String contentText)
 	{
 		Alert errorAlert = new Alert(AlertType.ERROR);
-
+		errorAlert.setTitle(titleText);
 		errorAlert.setHeaderText(headerText);
 		errorAlert.setContentText(contentText);
 		errorAlert.showAndWait();
