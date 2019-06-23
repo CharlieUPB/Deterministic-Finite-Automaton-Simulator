@@ -163,7 +163,7 @@ public class sceneAutomataController {
 	@FXML
 	private void initialize()
 	{
-		//this.loadRecentFiles();
+		this.loadRecentFiles();
 		//this.labelCurrentInput.setTooltip(new Tooltip("Entrada"));
 	}
 
@@ -415,7 +415,7 @@ public class sceneAutomataController {
 			this.projectName.setText(fileSelected.toUpperCase());
 			this.mainTab.getSelectionModel().selectNext();
 			try {
-				//this.automata = this.fm.getAutomata(fileSelected);
+				this.automata = this.fManager.getAutomata(fileSelected);
 				//this.loadResources(this.automata);
 			} catch (Exception ex) {
 				Alert errorAlert = new Alert(AlertType.ERROR);
@@ -464,7 +464,7 @@ public class sceneAutomataController {
 		Optional<String> result = dialog.showAndWait();
 		result.ifPresent(name -> {
 			try {
-				//this.fm.saveAutomata(name, automata);
+				this.fManager.saveAutomata(name, this.automata);
 				RadioMenuItem r1 = new RadioMenuItem(name + ".json");
 				r1.setToggleGroup(this.toggleGroup);
 				this.menuOpenFile.getItems().add(r1);
