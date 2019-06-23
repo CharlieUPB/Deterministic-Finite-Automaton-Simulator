@@ -244,15 +244,20 @@ public class sceneAutomataController {
 			}
 			else if (this.numberOfTransitionClicks == 2)
 			{
+				String name = "";
+				
 				this.nextState = clickedState;
 				this.secondClickedX = coordX;
 				this.secondClickedY = coordY;
 
-				this.createTransitionArrow(this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY);
+				name = this.createTransitionArrow(this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY);
 
-				Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
-				this.transitionArray.add(transition);
-
+				if(name != "")
+				{
+					Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
+					this.transitionArray.add(transition);
+				}
+				
 				this.numberOfTransitionClicks = 0;
 			}
 		}
@@ -263,15 +268,33 @@ public class sceneAutomataController {
 
 	}
 
-	public void createTransitionArrow(double x0, double y0, double x1, double y1)
+	public String createTransitionArrow(double x0, double y0, double x1, double y1)
 	{
-		Arrow arrow = new Arrow();
-		arrow.setStartX(x0);
-		arrow.setStartY(y0);
-		arrow.setEndX(x1);
-		arrow.setEndY(y1);
+		String name = inputTransitionNameDialog();
+		
+		if(name != "")
+		{
+			Arrow arrow = new Arrow();
+			arrow.setStartX(x0);
+			arrow.setStartY(y0);
+			arrow.setEndX(x1);
+			arrow.setEndY(y1);
+			
+			Text text = new Text(this.stateName);
+			text.setFont(new Font(15));
+			text.setFill(javafx.scene.paint.Color.BLUE);
+			text.setBoundsType(TextBoundsType.VISUAL);
+			
+			StackPane stackPane = new StackPane();
+			
+			stackPane.getChildren().addAll(arrow, text);
+			stackPane.setLayoutX(x0);
+			stackPane.setLayoutY(y0);
 
-		this.drawAreaAnchorPane.getChildren().add(arrow);
+			this.drawAreaAnchorPane.getChildren().add(stackPane);
+		}
+		
+		return name;
 	}
 
 	private boolean isStateInsidePane(double coordX, double coordY) 
