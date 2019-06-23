@@ -592,8 +592,8 @@ public class sceneAutomataController {
 	public void showAbout() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("About US!");
-		alert.setHeaderText("Look for helps in our repo");
-		alert.setContentText("Git Repository: https://github.com/Eli-C/Pushdown-Automata-Simulator \n Feel Free to Open Issues, or give recommendatios \n The Team: Elionor Cordova \n - Eun Kyu Choi \n - Carlos Gamboa" );
+		alert.setHeaderText("Look for helps in the following website.");
+		alert.setContentText("https://es.wikipedia.org/wiki/Aut%C3%B3mata_finito_determinista" );
 
 		Platform.runLater(alert::showAndWait);
 	}

@@ -54,6 +54,22 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
+                        <MenuBar fx:id="topMenu" styleClass="context-menu">
+                          <menus>
+                            <Menu mnemonicParsing="false" text="File">
+                              <items>
+                                    <MenuItem fx:id="newFile" mnemonicParsing="false" onAction="#createNewFile" text="New File" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As" />
+                                    <Menu fx:id="menuOpenFile" mnemonicParsing="false" onAction="#loadFile" text="Open File" />
+                              </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" text="Help">
+                              <items>
+                                <MenuItem mnemonicParsing="false" onAction="#showAbout" text="About" />
+                              </items>
+                            </Menu>
+                          </menus>
+                        </MenuBar>
                         <Button fx:id="newStateButton" layoutX="839.0" layoutY="110.0" mnemonicParsing="false" onAction="#setEditionVariableState" text="Estado">
                            <styleClass>
                               <String fx:value="primary" />
@@ -79,26 +95,6 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <MenuBar fx:id="topMenu" layoutX="6.0" styleClass="context-menu">
-                          <menus>
-                            <Menu mnemonicParsing="false" text="File">
-                              <items>
-                                    <MenuItem fx:id="newFile" mnemonicParsing="false" onAction="#createNewFile" text="new File" />
-                                <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As" />
-                                    <Menu fx:id="menuOpenFile" mnemonicParsing="false" onAction="#loadFile" text="Open File" />
-                              </items>
-                            </Menu>
-                            <Menu mnemonicParsing="false" text="Edit">
-                                 <items>
-                                    <MenuItem mnemonicParsing="false" onAction="#showEditComponent" text="Edit Or Delete Rules" />
-                                 </items></Menu>
-                            <Menu mnemonicParsing="false" text="Help">
-                              <items>
-                                <MenuItem mnemonicParsing="false" onAction="#showAbout" text="About" />
-                              </items>
-                            </Menu>
-                          </menus>
-                        </MenuBar>
                         <TextField fx:id="inputString" layoutX="176.0" layoutY="51.0" promptText="Cadena de entrada" />
                         <Button fx:id="btnStart" layoutX="281.0" layoutY="93.0" mnemonicParsing="false" onAction="#simulate" text="Start">
                            <styleClass>
