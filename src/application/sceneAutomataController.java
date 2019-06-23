@@ -205,7 +205,7 @@ public class sceneAutomataController {
 					this.stateName = name;
 					
 					Text text = new Text(this.stateName);
-					text.setFont(new Font(15));
+					text.setFont(new Font(20));
 					text.setFill(javafx.scene.paint.Color.WHITE);
 					text.setBoundsType(TextBoundsType.VISUAL);
 					
@@ -216,7 +216,6 @@ public class sceneAutomataController {
 					stackPane.setLayoutX(coordX - State.RADIUS);
 					stackPane.setLayoutY(coordY - State.RADIUS);
 					this.drawAreaAnchorPane.getChildren().add(stackPane);
-					
 
 					State state = new State(this.stateName, coordX, coordY);
 					this.stateArray.add(state);
@@ -254,6 +253,7 @@ public class sceneAutomataController {
 
 				if(name != "")
 				{
+					this.transitionSymbol = name.charAt(0);
 					Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
 					this.transitionArray.add(transition);
 				}
@@ -280,16 +280,39 @@ public class sceneAutomataController {
 			arrow.setEndX(x1);
 			arrow.setEndY(y1);
 			
-			Text text = new Text(this.stateName);
-			text.setFont(new Font(15));
+			Text text = new Text(name);
+			text.setFont(new Font(20));
 			text.setFill(javafx.scene.paint.Color.BLUE);
 			text.setBoundsType(TextBoundsType.VISUAL);
 			
 			StackPane stackPane = new StackPane();
 			
 			stackPane.getChildren().addAll(arrow, text);
-			stackPane.setLayoutX(x0);
-			stackPane.setLayoutY(y0);
+			
+			if(x1 < x0)
+			{
+				stackPane.setLayoutX(x1);
+				if (y0 < y1) 
+				{
+					stackPane.setLayoutY(y0);
+				}
+				if (y1 < y0) 
+				{
+					stackPane.setLayoutY(y1);
+				}
+			}
+			else if (x0 <= x1) 
+			{
+				stackPane.setLayoutX(x0);	
+				if (y0 < y1) 
+				{
+					stackPane.setLayoutY(y0);
+				}
+				if (y1 < y0) 
+				{
+					stackPane.setLayoutY(y1);
+				}
+			}
 
 			this.drawAreaAnchorPane.getChildren().add(stackPane);
 		}
