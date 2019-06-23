@@ -9,15 +9,29 @@ public class Automata {
 	private ArrayList<State> acceptanceStates;
 	private ArrayList<Transition> transitions;
 	
-	public Automata() {}
-	
-	public Automata(ArrayList<State> states, State initalState, ArrayList<State> acceptanceStates, ArrayList<Transition> transitions) 
+	public Automata() 
 	{
-		this.states = states;
-		this.initialState = initalState;
-		this.acceptanceStates = acceptanceStates;
-		this.transitions = transitions;
+		this.states = new ArrayList<State>();
+		this.initialState = null;
+		this.acceptanceStates = new ArrayList<State>();
+		this.transitions = new ArrayList<Transition>();
 	}
+	
+	public void addState(State state)
+	{ 
+		this.states.add(state);
+	}
+	
+	public void addTransition(Transition transition)
+	{
+		this.transitions.add(transition);
+	}
+	
+	public void addAcceptanceState(State acceptanceState)
+	{
+		this.acceptanceStates.add(acceptanceState);
+	}
+	
 	
 	public boolean stateNameExists(String stateName)
 	{
