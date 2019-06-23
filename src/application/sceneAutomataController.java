@@ -18,6 +18,9 @@ import java.util.Stack;
 import java.util.function.ObjDoubleConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -205,21 +208,9 @@ public class sceneAutomataController {
 					if(!this.automata.stateNameExists(name))
 					{
 						this.stateName = name;
-						Text text = new Text(this.stateName);
-						text.setFont(new Font(20));
-						text.setFill(javafx.scene.paint.Color.WHITE);
-						text.setBoundsType(TextBoundsType.VISUAL);
-
-						StackPane stackPane = new StackPane();
-
-						Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
-						stackPane.getChildren().addAll(circle, text);
-						stackPane.setLayoutX(coordX - State.RADIUS);
-						stackPane.setLayoutY(coordY - State.RADIUS);
-						this.drawAreaAnchorPane.getChildren().add(stackPane);
-
 						State state = new State(this.stateName, coordX, coordY);
 						this.stateArray.add(state);
+						this.drawState(state);
 					} 
 					else 
 					{
@@ -249,8 +240,6 @@ public class sceneAutomataController {
 			}
 			else if (this.numberOfTransitionClicks == 2)
 			{
-
-
 				this.nextState = clickedState;
 				this.secondClickedX = coordX;
 				this.secondClickedY = coordY;
@@ -261,10 +250,10 @@ public class sceneAutomataController {
 				{
 					if(!this.automata.duplicateTransition(name.charAt(0), this.initialState.getName()))
 					{
-						this.createTransitionArrow(this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY, name);
 						this.transitionSymbol = name.charAt(0);
-						Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
+						Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState, this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY);
 						this.transitionArray.add(transition);
+						this.drawTransition(transition);
 					}
 					else 
 					{
@@ -281,50 +270,6 @@ public class sceneAutomataController {
 
 	}
 
-	public void createTransitionArrow(double x0, double y0, double x1, double y1, String transitionName)
-	{
-		Arrow arrow = new Arrow();
-		arrow.setStartX(x0);
-		arrow.setStartY(y0);
-		arrow.setEndX(x1);
-		arrow.setEndY(y1);
-
-		Text text = new Text(transitionName);
-		text.setFont(new Font(20));
-		text.setFill(javafx.scene.paint.Color.BLUE);
-		text.setBoundsType(TextBoundsType.VISUAL);
-
-		StackPane stackPane = new StackPane();
-
-		stackPane.getChildren().addAll(arrow, text);
-
-		if(x1 < x0)
-		{
-			stackPane.setLayoutX(x1);
-			if (y0 < y1) 
-			{
-				stackPane.setLayoutY(y0);
-			}
-			if (y1 < y0) 
-			{
-				stackPane.setLayoutY(y1);
-			}
-		}
-		else if (x0 <= x1) 
-		{
-			stackPane.setLayoutX(x0);	
-			if (y0 < y1) 
-			{
-				stackPane.setLayoutY(y0);
-			}
-			if (y1 < y0) 
-			{
-				stackPane.setLayoutY(y1);
-			}
-		}
-
-		this.drawAreaAnchorPane.getChildren().add(stackPane);
-	}
 
 	private boolean isStateInsidePane(double coordX, double coordY) 
 	{
@@ -402,6 +347,92 @@ public class sceneAutomataController {
 		}
 		return nameTransition;
 	}
+	
+	// DRAWING RELATED METHODS.
+	
+	
+	private void loadResources() 
+	{
+		for (State state : this.automata.getStates()) 
+		{
+			drawState(state);
+		}
+		for (Transition transition : this.automata.getTransitions()) 
+		{
+			drawTransition(transition);
+		}
+	}
+	
+	private void drawState(State state) 
+	{
+		Text text = new Text(state.getName());
+		text.setFont(new Font(20));
+		text.setFill(javafx.scene.paint.Color.WHITE);
+		text.setBoundsType(TextBoundsType.VISUAL);
+
+		StackPane stackPane = new StackPane();
+
+		Circle circle = new Circle(state.getxCoord(),state.getyCoord(), State.RADIUS, javafx.scene.paint.Color.BLUE);
+		stackPane.getChildren().addAll(circle, text);
+		stackPane.setLayoutX(state.getxCoord() - State.RADIUS);
+		stackPane.setLayoutY(state.getyCoord() - State.RADIUS);
+		this.drawAreaAnchorPane.getChildren().add(stackPane);
+
+	}
+	
+	public void drawTransition(Transition transition)
+	{
+		double x0 = transition.getX0Coord();
+		double y0 = transition.getY0Coord();
+		double x1 = transition.getX1Coord();
+		double y1 = transition.getY1Coord();
+		String transitionName = Character.toString(transition.getSymbol());
+
+		Arrow arrow = new Arrow();
+		arrow.setStartX(x0);
+		arrow.setStartY(y0);
+		arrow.setEndX(x1);
+		arrow.setEndY(y1);
+
+		Text text = new Text(transitionName);
+		text.setFont(new Font(20));
+		text.setFill(javafx.scene.paint.Color.BLUE);
+		text.setBoundsType(TextBoundsType.VISUAL);
+
+		StackPane stackPane = new StackPane();
+
+		stackPane.getChildren().addAll(arrow, text);
+
+		if(x1 < x0)
+		{
+			stackPane.setLayoutX(x1);
+			if (y0 < y1) 
+			{
+				stackPane.setLayoutY(y0);
+			}
+			if (y1 < y0) 
+			{
+				stackPane.setLayoutY(y1);
+			}
+		}
+		else if (x0 <= x1) 
+		{
+			stackPane.setLayoutX(x0);	
+			if (y0 < y1) 
+			{
+				stackPane.setLayoutY(y0);
+			}
+			if (y1 < y0) 
+			{
+				stackPane.setLayoutY(y1);
+			}
+		}
+
+		this.drawAreaAnchorPane.getChildren().add(stackPane);
+	}
+	
+	
+	// FILE RELATED METHODS
 
 	//Called when a file is double clicked from the main menu
 	@FXML
@@ -416,7 +447,7 @@ public class sceneAutomataController {
 			this.mainTab.getSelectionModel().selectNext();
 			try {
 				this.automata = this.fManager.getAutomata(fileSelected);
-				//this.loadResources(this.automata);
+				this.loadResources();
 			} catch (Exception ex) {
 				Alert errorAlert = new Alert(AlertType.ERROR);
 				errorAlert.setHeaderText("Oops! There was a problem");
@@ -454,6 +485,8 @@ public class sceneAutomataController {
 		this.inputString.setText("");
 		this.mainTab.getSelectionModel().selectFirst();
 	}
+	
+	// Called when save file is called.
 
 	@FXML
 	public void saveFile() {
@@ -477,12 +510,7 @@ public class sceneAutomataController {
 		});
 
 	}
-
-	@FXML 
-	public void reRender() {
-		this.loadRecentFiles();
-	}
-
+	
 	private void loadRecentFiles() {
 		this.recentFilesList.getItems().clear();
 		this.menuOpenFile.getItems().clear();
@@ -502,6 +530,14 @@ public class sceneAutomataController {
 		}
 	}
 
+	
+	@FXML 
+	public void reRender() {
+		this.loadRecentFiles();
+	}
+	
+
+	// ANIMATION RELATED METHODS
 
 	@FXML 
 	public void simulate() {
@@ -544,9 +580,12 @@ public class sceneAutomataController {
 	private void animate() {
 
 	}
-
+	
+	
+	// MODALS RELATED METHODS.
 	@FXML
 	public void showEditComponent() {
+		
 	}
 
 	@FXML 
