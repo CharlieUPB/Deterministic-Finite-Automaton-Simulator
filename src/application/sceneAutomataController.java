@@ -49,6 +49,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.*;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.Circle;
@@ -59,6 +60,9 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 
 
@@ -190,15 +194,33 @@ public class sceneAutomataController {
 	{
 		double coordX = event.getX();
 		double coordY = event.getY();
+		
 		if (this.isStateInsidePane(coordX, coordY))
 		{
 			if (!this.automata.DoesStateCollision(coordX, coordY))
 			{
-				Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
-				this.drawAreaAnchorPane.getChildren().add(circle);
+				String name = inputStateNameDialog();
+				if (name != "")
+				{
+					this.stateName = name;
+					
+					Text text = new Text(this.stateName);
+					text.setFont(new Font(15));
+					text.setFill(javafx.scene.paint.Color.WHITE);
+					text.setBoundsType(TextBoundsType.VISUAL);
+					
+					StackPane stackPane = new StackPane();
+					
+					Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
+					stackPane.getChildren().addAll(circle, text);
+					stackPane.setLayoutX(coordX - State.RADIUS);
+					stackPane.setLayoutY(coordY - State.RADIUS);
+					this.drawAreaAnchorPane.getChildren().add(stackPane);
+					
 
-				State state = new State(this.stateName, coordX, coordY);
-				this.stateArray.add(state);
+					State state = new State(this.stateName, coordX, coordY);
+					this.stateArray.add(state);
+				}
 			}
 		}
 	}
@@ -287,8 +309,44 @@ public class sceneAutomataController {
 		return this.automata.getStateByCoords(coordX, coordY);
 	}
 
-	//Called when a file is double clicked from the main menu
 
+	public String inputStateNameDialog()
+	{
+		TextInputDialog dialog = new TextInputDialog("Estado");
+		String nameState = "";
+		
+		dialog.setTitle("Nuevo Estado");
+		dialog.setHeaderText("Ingrese el nombre del nuevo estado:");
+		dialog.setContentText("Estado:");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if(result.isPresent())
+		{
+			nameState = result.get();
+		}
+		return nameState;
+	}
+	
+	public String inputTransitionNameDialog()
+	{
+		TextInputDialog dialog = new TextInputDialog("Transicion");
+		String nameTransition = "";
+		
+		dialog.setTitle("Nueva Transicion");
+		dialog.setHeaderText("Ingrese el simbolo de la transicion:");
+		dialog.setContentText("Estado:");
+
+		Optional<String> result = dialog.showAndWait();
+
+		if(result.isPresent())
+		{
+			nameTransition = result.get();
+		}
+		return nameTransition;
+	}
+
+	//Called when a file is double clicked from the main menu
 	@FXML
 	public void getFile(MouseEvent event) {
 		if(event.getClickCount() == 2) {
