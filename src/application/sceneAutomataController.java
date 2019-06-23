@@ -59,6 +59,7 @@ public class sceneAutomataController {
 	@FXML
 	private ListView recentFilesList;
 
+
 	@FXML
 	private Tab crearAutomataTab;
 	
@@ -120,6 +121,7 @@ public class sceneAutomataController {
 
 	int numberOfTransitionClicks = 0;
 
+	
 	public sceneAutomataController() {}
 
 	@FXML
@@ -127,8 +129,44 @@ public class sceneAutomataController {
 	{
 		this.loadRecentFiles();
 		//this.labelCurrentInput.setTooltip(new Tooltip("Entrada"));
+		this.crearAutomataTab.setDisable(true);
+		this.automataTab.setDisable(true);
 	}
+	
+	@FXML
+	public void onSelectionChangedTab()
+	{
+		int indexOfTab = this.mainTab.getSelectionModel().getSelectedIndex();;
+		System.out.println("index: " + indexOfTab);
+		switch (indexOfTab) {
+			case 0:
+				this.crearAutomataTab.setDisable(true);
+				this.automataTab.setDisable(true);
+			break;
+			
+			case 1:
+				this.crearAutomataTab.setDisable(false);
+				this.automataTab.setDisable(true);
+			break;
+			
+			case 2:
+				this.inicioTab.setDisable(false);
+				this.crearAutomataTab.setDisable(true);
+			break;
 
+			default:
+			break;
+		}
+	}
+	
+
+	@FXML
+	public void onClickCreateNewAutomataButton() 
+	{
+		this.crearAutomataTab.setDisable(false);
+		this.mainTab.getSelectionModel().selectNext();
+	}
+	
 	@FXML
 	public void createAutomatonOnMouseClicked(MouseEvent event)
 	{
@@ -404,6 +442,7 @@ public class sceneAutomataController {
 			infoAlert.showAndWait();
 			this.projectName.setText(fileSelected.toUpperCase());
 			this.mainTab.getSelectionModel().selectNext();
+			this.crearAutomataTab.setDisable(false);
 			try {
 				this.automata = this.fManager.getAutomata(fileSelected);
 				this.loadResources(this.drawAreaAnchorPane);
@@ -476,6 +515,12 @@ public class sceneAutomataController {
 
 	}
 	
+	@FXML
+	public void testWord()
+	{
+		this.mainTab.getSelectionModel().selectNext();
+	}
+	
 	private void loadRecentFiles() {
 		this.recentFilesList.getItems().clear();
 		this.menuOpenFile.getItems().clear();
@@ -497,9 +542,11 @@ public class sceneAutomataController {
 
 	
 	@FXML 
-	public void reRender() {
+	public void reRender() 
+	{
 		this.loadRecentFiles();
 	}
+	
 	
 
 	// ANIMATION RELATED METHODS
