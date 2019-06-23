@@ -1,0 +1,129 @@
+{
+  "states": [
+    {
+      "name": "q0",
+      "xCoord": 113.0,
+      "yCoord": 221.0
+    },
+    {
+      "name": "q1",
+      "xCoord": 550.0,
+      "yCoord": 247.0
+    },
+    {
+      "name": "q2",
+      "xCoord": 291.0,
+      "yCoord": 406.0
+    },
+    {
+      "name": "q3",
+      "xCoord": 361.0,
+      "yCoord": 179.0
+    }
+  ],
+  "acceptanceStates": [],
+  "transitions": [
+    {
+      "symbol": "0",
+      "initialState": {
+        "name": "q0",
+        "xCoord": 113.0,
+        "yCoord": 221.0
+      },
+      "nextState": {
+        "name": "q2",
+        "xCoord": 291.0,
+        "yCoord": 406.0
+      },
+      "x0Coord": 100.0,
+      "y0Coord": 207.0,
+      "x1Coord": 284.0,
+      "y1Coord": 400.0
+    },
+    {
+      "symbol": "1",
+      "initialState": {
+        "name": "q0",
+        "xCoord": 113.0,
+        "yCoord": 221.0
+      },
+      "nextState": {
+        "name": "q3",
+        "xCoord": 361.0,
+        "yCoord": 179.0
+      },
+      "x0Coord": 109.0,
+      "y0Coord": 203.0,
+      "x1Coord": 349.0,
+      "y1Coord": 168.0
+    },
+    {
+      "symbol": "c",
+      "initialState": {
+        "name": "q3",
+        "xCoord": 361.0,
+        "yCoord": 179.0
+      },
+      "nextState": {
+        "name": "q1",
+        "xCoord": 550.0,
+        "yCoord": 247.0
+      },
+      "x0Coord": 376.0,
+      "y0Coord": 168.0,
+      "x1Coord": 536.0,
+      "y1Coord": 233.0
+    },
+    {
+      "symbol": "d",
+      "initialState": {
+        "name": "q1",
+        "xCoord": 550.0,
+        "yCoord": 247.0
+      },
+      "nextState": {
+        "name": "q2",
+        "xCoord": 291.0,
+        "yCoord": 406.0
+      },
+      "x0Coord": 550.0,
+      "y0Coord": 260.0,
+      "x1Coord": 306.0,
+      "y1Coord": 407.0
+    },
+    {
+      "symbol": "y",
+      "initialState": {
+        "name": "q2",
+        "xCoord": 291.0,
+        "yCoord": 406.0
+      },
+      "nextState": {
+        "name": "q3",
+        "xCoord": 361.0,
+        "yCoord": 179.0
+      },
+      "x0Coord": 300.0,
+      "y0Coord": 392.0,
+      "x1Coord": 359.0,
+      "y1Coord": 196.0
+    },
+    {
+      "symbol": "n",
+      "initialState": {
+        "name": "q3",
+        "xCoord": 361.0,
+        "yCoord": 179.0
+      },
+      "nextState": {
+        "name": "q2",
+        "xCoord": 291.0,
+        "yCoord": 406.0
+      },
+      "x0Coord": 340.0,
+      "y0Coord": 189.0,
+      "x1Coord": 287.0,
+      "y1Coord": 383.0
+    }
+  ]
+}
