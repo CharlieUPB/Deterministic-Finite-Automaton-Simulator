@@ -19,6 +19,33 @@ public class Automata {
 		this.transitions = transitions;
 	}
 	
+	public boolean stateNameExists(String stateName)
+	{
+		for (State state : this.states) {
+			if(state.getName().equals(stateName))
+			{
+				System.out.println("You can't add duplicate names on states");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean duplicateTransition(char symbol, String initialStateName)
+	{
+		for (Transition transition : this.transitions) {
+			if (transition.getInitialState().getName().equals(initialStateName))
+			{
+				if (transition.getSymbol() == symbol)
+				{
+					System.out.println("You cant have the same symbol with different transitions from one state in AFD");
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean recgonizeWord(String word, int index, State currentState) 
 	{
 		

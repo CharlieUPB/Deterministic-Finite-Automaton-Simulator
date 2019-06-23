@@ -194,7 +194,7 @@ public class sceneAutomataController {
 	{
 		double coordX = event.getX();
 		double coordY = event.getY();
-		
+
 		if (this.isStateInsidePane(coordX, coordY))
 		{
 			if (!this.automata.DoesStateCollision(coordX, coordY))
@@ -202,23 +202,29 @@ public class sceneAutomataController {
 				String name = inputStateNameDialog();
 				if (name != "")
 				{
-					this.stateName = name;
-					
-					Text text = new Text(this.stateName);
-					text.setFont(new Font(20));
-					text.setFill(javafx.scene.paint.Color.WHITE);
-					text.setBoundsType(TextBoundsType.VISUAL);
-					
-					StackPane stackPane = new StackPane();
-					
-					Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
-					stackPane.getChildren().addAll(circle, text);
-					stackPane.setLayoutX(coordX - State.RADIUS);
-					stackPane.setLayoutY(coordY - State.RADIUS);
-					this.drawAreaAnchorPane.getChildren().add(stackPane);
+					if(!this.automata.stateNameExists(name))
+					{
+						this.stateName = name;
+						Text text = new Text(this.stateName);
+						text.setFont(new Font(20));
+						text.setFill(javafx.scene.paint.Color.WHITE);
+						text.setBoundsType(TextBoundsType.VISUAL);
 
-					State state = new State(this.stateName, coordX, coordY);
-					this.stateArray.add(state);
+						StackPane stackPane = new StackPane();
+
+						Circle circle = new Circle(coordX,coordY, State.RADIUS, javafx.scene.paint.Color.BLUE);
+						stackPane.getChildren().addAll(circle, text);
+						stackPane.setLayoutX(coordX - State.RADIUS);
+						stackPane.setLayoutY(coordY - State.RADIUS);
+						this.drawAreaAnchorPane.getChildren().add(stackPane);
+
+						State state = new State(this.stateName, coordX, coordY);
+						this.stateArray.add(state);
+					} 
+					else 
+					{
+						this.ErrorAlertMessage("Input no valido", "No es posible tener nombres de estados duplicados.");
+					}
 				}
 			}
 		}
@@ -243,21 +249,28 @@ public class sceneAutomataController {
 			}
 			else if (this.numberOfTransitionClicks == 2)
 			{
-				String name = "";
-				
+
+
 				this.nextState = clickedState;
 				this.secondClickedX = coordX;
 				this.secondClickedY = coordY;
 
-				name = this.createTransitionArrow(this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY);
-
+				String name = this.inputTransitionNameDialog();
+				
 				if(name != "")
 				{
-					this.transitionSymbol = name.charAt(0);
-					Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
-					this.transitionArray.add(transition);
+					if(!this.automata.duplicateTransition(name.charAt(0), this.initialState.getName()))
+					{
+						this.createTransitionArrow(this.firstClickedX,this.firstClickedY, this.secondClickedX, this.secondClickedY, name);
+						this.transitionSymbol = name.charAt(0);
+						Transition transition = new Transition(this.transitionSymbol, this.initialState, this.nextState);
+						this.transitionArray.add(transition);
+					}
+					else 
+					{
+						this.ErrorAlertMessage("Input no valido en un AFD", "No es posible tener el mismo simbolo que te lleve a distintos estados en un AFD.");
+					}
 				}
-				
 				this.numberOfTransitionClicks = 0;
 			}
 		}
@@ -268,56 +281,49 @@ public class sceneAutomataController {
 
 	}
 
-	public String createTransitionArrow(double x0, double y0, double x1, double y1)
+	public void createTransitionArrow(double x0, double y0, double x1, double y1, String transitionName)
 	{
-		String name = inputTransitionNameDialog();
-		
-		if(name != "")
-		{
-			Arrow arrow = new Arrow();
-			arrow.setStartX(x0);
-			arrow.setStartY(y0);
-			arrow.setEndX(x1);
-			arrow.setEndY(y1);
-			
-			Text text = new Text(name);
-			text.setFont(new Font(20));
-			text.setFill(javafx.scene.paint.Color.BLUE);
-			text.setBoundsType(TextBoundsType.VISUAL);
-			
-			StackPane stackPane = new StackPane();
-			
-			stackPane.getChildren().addAll(arrow, text);
-			
-			if(x1 < x0)
-			{
-				stackPane.setLayoutX(x1);
-				if (y0 < y1) 
-				{
-					stackPane.setLayoutY(y0);
-				}
-				if (y1 < y0) 
-				{
-					stackPane.setLayoutY(y1);
-				}
-			}
-			else if (x0 <= x1) 
-			{
-				stackPane.setLayoutX(x0);	
-				if (y0 < y1) 
-				{
-					stackPane.setLayoutY(y0);
-				}
-				if (y1 < y0) 
-				{
-					stackPane.setLayoutY(y1);
-				}
-			}
+		Arrow arrow = new Arrow();
+		arrow.setStartX(x0);
+		arrow.setStartY(y0);
+		arrow.setEndX(x1);
+		arrow.setEndY(y1);
 
-			this.drawAreaAnchorPane.getChildren().add(stackPane);
+		Text text = new Text(transitionName);
+		text.setFont(new Font(20));
+		text.setFill(javafx.scene.paint.Color.BLUE);
+		text.setBoundsType(TextBoundsType.VISUAL);
+
+		StackPane stackPane = new StackPane();
+
+		stackPane.getChildren().addAll(arrow, text);
+
+		if(x1 < x0)
+		{
+			stackPane.setLayoutX(x1);
+			if (y0 < y1) 
+			{
+				stackPane.setLayoutY(y0);
+			}
+			if (y1 < y0) 
+			{
+				stackPane.setLayoutY(y1);
+			}
 		}
-		
-		return name;
+		else if (x0 <= x1) 
+		{
+			stackPane.setLayoutX(x0);	
+			if (y0 < y1) 
+			{
+				stackPane.setLayoutY(y0);
+			}
+			if (y1 < y0) 
+			{
+				stackPane.setLayoutY(y1);
+			}
+		}
+
+		this.drawAreaAnchorPane.getChildren().add(stackPane);
 	}
 
 	private boolean isStateInsidePane(double coordX, double coordY) 
@@ -360,7 +366,7 @@ public class sceneAutomataController {
 	{
 		TextInputDialog dialog = new TextInputDialog("Estado");
 		String nameState = "";
-		
+
 		dialog.setTitle("Nuevo Estado");
 		dialog.setHeaderText("Ingrese el nombre del nuevo estado:");
 		dialog.setContentText("Estado:");
@@ -373,12 +379,12 @@ public class sceneAutomataController {
 		}
 		return nameState;
 	}
-	
+
 	public String inputTransitionNameDialog()
 	{
 		TextInputDialog dialog = new TextInputDialog("Transicion");
 		String nameTransition = "";
-		
+
 		dialog.setTitle("Nueva Transicion");
 		dialog.setHeaderText("Ingrese el simbolo de la transicion:");
 		dialog.setContentText("Estado:");
@@ -388,6 +394,11 @@ public class sceneAutomataController {
 		if(result.isPresent())
 		{
 			nameTransition = result.get();
+			if (nameTransition.length() > 1 || nameTransition.equals(" "))
+			{
+				this.ErrorAlertMessage("Simbolo Invalido", "El simbolo de una transicion debe ser un caracter");
+				nameTransition = "";
+			}
 		}
 		return nameTransition;
 	}
@@ -549,13 +560,13 @@ public class sceneAutomataController {
 	}
 
 
-	public void ErrorAlertMessage()
+	public void ErrorAlertMessage(String headerText, String contentText)
 	{
 		Alert errorAlert = new Alert(AlertType.ERROR);
 
-		errorAlert.setHeaderText("Input not valid");
-		errorAlert.setContentText("This text area must contains the appropiate words.");
-		errorAlert.showAndWait();		
+		errorAlert.setHeaderText(headerText);
+		errorAlert.setContentText(contentText);
+		errorAlert.showAndWait();
 	}
 
 	public void successMessageAlert()
