@@ -95,14 +95,15 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="inputString" layoutX="176.0" layoutY="51.0" promptText="Cadena de entrada" />
-                        <Button fx:id="btnStart" layoutX="281.0" layoutY="93.0" mnemonicParsing="false" onAction="#onStartClicked" text="Start">
+                        <TextField fx:id="inputString" layoutX="187.0" layoutY="12.0" promptText="Cadena de entrada" />
+                        <Button fx:id="btnStart" layoutX="417.0" layoutY="12.0" mnemonicParsing="false" onAction="#onStartClicked" text="Start">
                            <styleClass>
                               <String fx:value="success" />
                               <String fx:value="action-btn" />
                            </styleClass></Button>
-                        <Label fx:id="projectName" layoutX="539.0" layoutY="22.0" styleClass="mainLabel" text="FileName" />
-                        <Label layoutX="28.0" layoutY="55.0" text="CADENA DE ENTRADA:" />
+                        <Label fx:id="projectName" layoutX="782.0" layoutY="13.0" styleClass="mainLabel" text="FileName" />
+                        <Label layoutX="14.0" layoutY="18.0" text="CADENA DE ENTRADA:" />
+                        <AnchorPane fx:id="showAreaAnchorPane" layoutX="111.0" layoutY="54.0" onMouseClicked="#createAutomatonOnMouseClicked" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
                      </children>
                   </AnchorPane>
             </content>
