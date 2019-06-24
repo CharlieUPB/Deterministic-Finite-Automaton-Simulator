@@ -27,7 +27,7 @@
                      <children>
                         <Label layoutX="397.0" layoutY="64.0" styleClass="mainLabel" text="RECENT FILES" />
                         <ListView fx:id="recentFilesList" layoutX="269.0" layoutY="93.0" onMouseClicked="#getFile" prefHeight="485.0" prefWidth="384.0" styleClass="slider" />
-                        <Button fx:id="createButton" layoutX="44.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickCreateNewAutomataButton" text="Crear Nuevo Automata">
+                        <Button fx:id="createButton" layoutX="44.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickCreateNewAutomataButton" text="Crear / Editar Automata">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -77,9 +77,21 @@
                               <String fx:value="action-btn" />
                            </styleClass></Button>
                         <AnchorPane fx:id="drawAreaAnchorPane" layoutX="25.0" layoutY="43.0" onMouseClicked="#createAutomatonOnMouseClicked" prefHeight="584.0" prefWidth="773.0" style="-fx-background-color: lavender; -fx-border-color: black;" />
-                        <Button fx:id="deleteButton" layoutX="840.0" layoutY="265.0" mnemonicParsing="false" onAction="#onAutomataDelete" text="Delete">
+                        <Button fx:id="deleteButton" layoutX="841.0" layoutY="463.0" mnemonicParsing="false" onAction="#onAutomataDelete" text="Delete">
                            <styleClass>
                               <String fx:value="danger" />
+                              <String fx:value="action-btn" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="initialStateButton" layoutX="828.0" layoutY="252.0" mnemonicParsing="false" onAction="#onInitialState" text="Estado Inicial">
+                           <styleClass>
+                              <String fx:value="warning" />
+                              <String fx:value="action-btn" />
+                           </styleClass>
+                        </Button>
+                        <Button fx:id="stateAcceptButton" layoutX="816.0" layoutY="307.0" mnemonicParsing="false" onAction="#onStateAccept" text="Estado Aceptable">
+                           <styleClass>
+                              <String fx:value="success" />
                               <String fx:value="action-btn" />
                            </styleClass>
                         </Button>
@@ -87,7 +99,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab fx:id="automataTab" onSelectionChanged="#reRender" text="Automata">
+          <Tab fx:id="automataTab" onSelectionChanged="#onSelectionChangedTab" text="Automata">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

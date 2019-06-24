@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -114,7 +116,9 @@ public class sceneAutomataController {
 	{
 		NEWSTATE, 
 		NEWTRANSITION,
-		DELETE;
+		DELETE,
+		INITIAL,
+		ACCEPTANCE;
 	}
 
 	editionType currentEditionType;
@@ -128,20 +132,16 @@ public class sceneAutomataController {
 	private void initialize()
 	{
 		this.loadRecentFiles();
-		//this.labelCurrentInput.setTooltip(new Tooltip("Entrada"));
-		this.crearAutomataTab.setDisable(true);
-		this.automataTab.setDisable(true);
 	}
 	
-	@FXML
+
 	public void onSelectionChangedTab()
 	{
-		int indexOfTab = this.mainTab.getSelectionModel().getSelectedIndex();;
-		System.out.println("index: " + indexOfTab);
+		int indexOfTab = this.mainTab.getSelectionModel().getSelectedIndex();
 		switch (indexOfTab) {
 			case 0:
-				this.crearAutomataTab.setDisable(true);
-				this.automataTab.setDisable(true);
+				//this.crearAutomataTab.setDisable(true);
+				//this.automataTab.setDisable(true);
 			break;
 			
 			case 1:
@@ -150,6 +150,7 @@ public class sceneAutomataController {
 			break;
 			
 			case 2:
+				this.automataTab.setDisable(false);
 				this.inicioTab.setDisable(false);
 				this.crearAutomataTab.setDisable(true);
 			break;
@@ -179,10 +180,48 @@ public class sceneAutomataController {
 		case NEWTRANSITION:
 			this.createNewTransition(event);
 			break;
+		case INITIAL:
+			this.createInitialState(event);
+			break;
+		case ACCEPTANCE:
+			this.createAcceptState(event);
+			break;	
 		default:
 			break;
 		}
 
+	}
+	
+	
+	public void createInitialState(MouseEvent event)
+	{
+		double coordX = event.getX();
+		double coordY = event.getY();
+		
+		if (this.isStateInsidePane(coordX, coordY))
+		{
+				State clickedState = this.getStateByCoords(coordX, coordY);
+				clickedState.setStateType("INITIAL");
+				this.automata.setInitialState(clickedState);
+				Circle circle = (Circle) this.drawAreaAnchorPane.lookup('#'+clickedState.getName());
+				circle.setFill(Color.GOLDENROD);
+		}
+	}
+	
+	
+	public void createAcceptState(MouseEvent event)
+	{
+		double coordX = event.getX();
+		double coordY = event.getY();
+		
+		if (this.isStateInsidePane(coordX, coordY))
+		{
+			State clickedState = this.getStateByCoords(coordX, coordY);
+			clickedState.setStateType("ACCEPTED");
+			this.automata.addAcceptanceState(clickedState);
+			Circle circle = (Circle) this.drawAreaAnchorPane.lookup('#'+clickedState.getName());
+			circle.setFill(Color.LIMEGREEN);
+		}
 	}
 
 	public void createNewState(MouseEvent event)
@@ -201,8 +240,8 @@ public class sceneAutomataController {
 					{
 						this.stateName = name;
 						State state = new State(this.stateName, coordX, coordY);
-						this.automata.addState(state);
 						this.drawState(state, this.drawAreaAnchorPane);
+						this.automata.addState(state);
 					} 
 					else 
 					{
@@ -287,6 +326,16 @@ public class sceneAutomataController {
 		this.currentEditionType = editionType.NEWTRANSITION;
 		this.numberOfTransitionClicks = 0;
 	}
+	
+	public void onInitialState() 
+	{
+		this.currentEditionType = editionType.INITIAL;
+	}
+	
+	public void onStateAccept()
+	{
+		this.currentEditionType = editionType.ACCEPTANCE;
+	}
 
 	public void onAutomataDelete()
 	{
@@ -368,13 +417,28 @@ public class sceneAutomataController {
 		text.setBoundsType(TextBoundsType.VISUAL);
 
 		StackPane stackPane = new StackPane();
+		
+		Color circleColor = javafx.scene.paint.Color.BLUE;
 
-		Circle circle = new Circle(state.getxCoord(),state.getyCoord(), State.RADIUS, javafx.scene.paint.Color.BLUE);
+		switch (state.getStateType()) 
+		{
+			case "INITIAL":
+				circleColor = Color.GOLDENROD;
+			break;
+			case "ACCEPTED":
+				circleColor = Color.LIMEGREEN;
+			break;
+			default:
+			break;
+		}
+		
+		Circle circle = new Circle(state.getxCoord(),state.getyCoord(), State.RADIUS, circleColor);
+		circle.setId(state.getName());
+		
 		stackPane.getChildren().addAll(circle, text);
 		stackPane.setLayoutX(state.getxCoord() - State.RADIUS);
 		stackPane.setLayoutY(state.getyCoord() - State.RADIUS);
 		pane.getChildren().add(stackPane);
-
 	}
 	
 	public void drawTransition(Transition transition, AnchorPane pane)
@@ -393,7 +457,7 @@ public class sceneAutomataController {
 
 		Text text = new Text(transitionName);
 		text.setFont(new Font(20));
-		text.setFill(javafx.scene.paint.Color.BLUE);
+		text.setFill(javafx.scene.paint.Color.CORAL);
 		text.setBoundsType(TextBoundsType.VISUAL);
 
 		StackPane stackPane = new StackPane();
@@ -403,7 +467,7 @@ public class sceneAutomataController {
 		if(x1 < x0)
 		{
 			stackPane.setLayoutX(x1);
-			if (y0 < y1) 
+			if (y0 <= y1) 
 			{
 				stackPane.setLayoutY(y0);
 			}
@@ -415,7 +479,7 @@ public class sceneAutomataController {
 		else if (x0 <= x1) 
 		{
 			stackPane.setLayoutX(x0);	
-			if (y0 < y1) 
+			if (y0 <= y1) 
 			{
 				stackPane.setLayoutY(y0);
 			}
@@ -440,12 +504,14 @@ public class sceneAutomataController {
 			infoAlert.setHeaderText("Loading your file");
 			infoAlert.setContentText("Opening your saved file. Click on Ok to continue...");
 			infoAlert.showAndWait();
-			this.projectName.setText(fileSelected.toUpperCase());
 			this.mainTab.getSelectionModel().selectNext();
 			this.crearAutomataTab.setDisable(false);
 			try {
 				this.automata = this.fManager.getAutomata(fileSelected);
+				this.drawAreaAnchorPane.getChildren().clear();
+				this.showAreaAnchorPane.getChildren().clear();
 				this.loadResources(this.drawAreaAnchorPane);
+				this.projectName.setText(fileSelected.toUpperCase());
 			} catch (Exception ex) {
 				Alert errorAlert = new Alert(AlertType.ERROR);
 				errorAlert.setHeaderText("Oops! There was a problem");
@@ -466,7 +532,10 @@ public class sceneAutomataController {
 		infoAlert.setContentText("Opening your saved file. Click on Ok to continue...");
 		infoAlert.showAndWait();
 		try {
-			//this.automata = this.fm.getAutomata(filename);
+			this.automata = this.fManager.getAutomata(filename);
+			this.drawAreaAnchorPane.getChildren().clear();
+			this.showAreaAnchorPane.getChildren().clear();
+			this.loadResources(this.drawAreaAnchorPane);
 			this.projectName.setText(filename.toUpperCase());
 		} catch (Exception ex) {
 			Alert errorAlert = new Alert(AlertType.ERROR);
@@ -506,6 +575,7 @@ public class sceneAutomataController {
 				r1.setToggleGroup(this.toggleGroup);
 				this.menuOpenFile.getItems().add(r1);
 			} catch (Exception ex) {
+				System.out.println(ex);
 				Alert errorAlert = new Alert(AlertType.ERROR);
 				errorAlert.setHeaderText("Error while saving file");
 				errorAlert.setContentText("FileName not valid.");
@@ -518,12 +588,13 @@ public class sceneAutomataController {
 	@FXML
 	public void testWord()
 	{
+		
 		this.mainTab.getSelectionModel().selectNext();
+		this.loadResources(this.showAreaAnchorPane);
 	}
 	
 	private void loadRecentFiles() {
 		this.recentFilesList.getItems().clear();
-		this.menuOpenFile.getItems().clear();
 		try {
 			Files.newDirectoryStream(Paths.get("./savedData"),path -> path.toString().endsWith(".json"))
 			.forEach(filePath -> { 
@@ -539,15 +610,6 @@ public class sceneAutomataController {
 			errorAlert.showAndWait();
 		}
 	}
-
-	
-	@FXML 
-	public void reRender() 
-	{
-		this.loadRecentFiles();
-	}
-	
-	
 
 	// ANIMATION RELATED METHODS
 
@@ -644,8 +706,9 @@ public class sceneAutomataController {
 	public void successMessageAlert()
 	{
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("SUCCESS!");
-		alert.setHeaderText("Variable saved");
+		alert.setTitle("FIN SIMULACION!");
+		alert.setHeaderText("EXITO!");
+		alert.setContentText("La cadena pertenece al lenguaje generado por el automata");
 		alert.showAndWait();
 	}
 

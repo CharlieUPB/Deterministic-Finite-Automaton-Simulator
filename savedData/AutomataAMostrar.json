@@ -1,0 +1,196 @@
+{
+  "states": [
+    {
+      "name": "q0",
+      "xCoord": 172.0,
+      "yCoord": 167.0,
+      "stateType": "ACCEPTED"
+    },
+    {
+      "name": "q1",
+      "xCoord": 426.0,
+      "yCoord": 157.0,
+      "stateType": ""
+    },
+    {
+      "name": "q2",
+      "xCoord": 166.0,
+      "yCoord": 381.0,
+      "stateType": ""
+    },
+    {
+      "name": "q3",
+      "xCoord": 438.0,
+      "yCoord": 377.0,
+      "stateType": ""
+    }
+  ],
+  "initialState": {
+    "name": "q0",
+    "xCoord": 172.0,
+    "yCoord": 167.0,
+    "stateType": "ACCEPTED"
+  },
+  "acceptanceStates": [
+    {
+      "name": "q0",
+      "xCoord": 172.0,
+      "yCoord": 167.0,
+      "stateType": "ACCEPTED"
+    }
+  ],
+  "transitions": [
+    {
+      "symbol": "1",
+      "initialState": {
+        "name": "q0",
+        "xCoord": 172.0,
+        "yCoord": 167.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q1",
+        "xCoord": 426.0,
+        "yCoord": 157.0,
+        "stateType": ""
+      },
+      "x0Coord": 173.0,
+      "y0Coord": 152.0,
+      "x1Coord": 430.0,
+      "y1Coord": 141.0
+    },
+    {
+      "symbol": "0",
+      "initialState": {
+        "name": "q0",
+        "xCoord": 172.0,
+        "yCoord": 167.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q2",
+        "xCoord": 166.0,
+        "yCoord": 381.0,
+        "stateType": ""
+      },
+      "x0Coord": 149.0,
+      "y0Coord": 162.0,
+      "x1Coord": 144.0,
+      "y1Coord": 376.0
+    },
+    {
+      "symbol": "1",
+      "initialState": {
+        "name": "q1",
+        "xCoord": 426.0,
+        "yCoord": 157.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q0",
+        "xCoord": 172.0,
+        "yCoord": 167.0,
+        "stateType": ""
+      },
+      "x0Coord": 425.0,
+      "y0Coord": 172.0,
+      "x1Coord": 188.0,
+      "y1Coord": 171.0
+    },
+    {
+      "symbol": "0",
+      "initialState": {
+        "name": "q1",
+        "xCoord": 426.0,
+        "yCoord": 157.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q3",
+        "xCoord": 438.0,
+        "yCoord": 377.0,
+        "stateType": ""
+      },
+      "x0Coord": 442.0,
+      "y0Coord": 166.0,
+      "x1Coord": 447.0,
+      "y1Coord": 366.0
+    },
+    {
+      "symbol": "1",
+      "initialState": {
+        "name": "q3",
+        "xCoord": 438.0,
+        "yCoord": 377.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q2",
+        "xCoord": 166.0,
+        "yCoord": 381.0,
+        "stateType": ""
+      },
+      "x0Coord": 423.0,
+      "y0Coord": 390.0,
+      "x1Coord": 166.0,
+      "y1Coord": 396.0
+    },
+    {
+      "symbol": "0",
+      "initialState": {
+        "name": "q3",
+        "xCoord": 438.0,
+        "yCoord": 377.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q1",
+        "xCoord": 426.0,
+        "yCoord": 157.0,
+        "stateType": ""
+      },
+      "x0Coord": 428.0,
+      "y0Coord": 363.0,
+      "x1Coord": 425.0,
+      "y1Coord": 169.0
+    },
+    {
+      "symbol": "1",
+      "initialState": {
+        "name": "q2",
+        "xCoord": 166.0,
+        "yCoord": 381.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q3",
+        "xCoord": 438.0,
+        "yCoord": 377.0,
+        "stateType": ""
+      },
+      "x0Coord": 173.0,
+      "y0Coord": 367.0,
+      "x1Coord": 420.0,
+      "y1Coord": 367.0
+    },
+    {
+      "symbol": "0",
+      "initialState": {
+        "name": "q2",
+        "xCoord": 166.0,
+        "yCoord": 381.0,
+        "stateType": ""
+      },
+      "nextState": {
+        "name": "q0",
+        "xCoord": 172.0,
+        "yCoord": 167.0,
+        "stateType": "ACCEPTED"
+      },
+      "x0Coord": 166.0,
+      "y0Coord": 362.0,
+      "x1Coord": 164.0,
+      "y1Coord": 173.0
+    }
+  ]
+}

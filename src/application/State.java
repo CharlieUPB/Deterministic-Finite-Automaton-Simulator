@@ -6,12 +6,14 @@ public class State {
 	private Double xCoord;
 	private Double yCoord;
 	static int RADIUS = 25;
-	
+	private String stateType;
+
 	public State(String name, Double xCoord, Double yCoord) 
 	{
 		this.name = name;
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
+		this.stateType = "";
 	}
 	
 	public String getName() {
@@ -37,5 +39,22 @@ public class State {
 	public void setyCoord(Double yCoord) {
 		this.yCoord = yCoord;
 	}
+	
+	public String getStateType() {
+		return stateType;
+	}
+
+	public void setStateType(String stateType) {
+		this.stateType = stateType;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		State candidate = (State) obj;
+		return this.name.equals(candidate.getName());
+	}
+	
+	
+
 
 }

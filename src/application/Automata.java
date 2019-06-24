@@ -69,14 +69,14 @@ public class Automata {
 			for (State acceptanceState : acceptanceStates) 
 			{
 				// Estamos en un estado de aceptacion?
-				if (currentState == acceptanceState) 
+				if (currentState.equals(acceptanceState)) 
 				{
 					System.out.println("Cadena pertenece al lenguaje generado por el automata");
 					return true;
 				} 
 				else 
 				{
-					System.out.println("Cadena NO pertenece al lenguaje generado por el automata");
+					System.out.println("Cadena NO pertenece al lenguaje generado por el automata, PORQUE no se llego a estado de aceptacion");
 					return false;
 				}
 			}
@@ -93,7 +93,7 @@ public class Automata {
 			} 
 			else 
 			{
-				System.out.println("Cadena NO pertenece al lenguaje generado por el automata");
+				System.out.println("Cadena NO pertenece al lenguaje generado por el automata, PORQUE no existe dicha transicion");
 				return false;
 			}
 		}
@@ -106,7 +106,7 @@ public class Automata {
 	{
 		for (Transition transition : this.transitions) 
 		{
-			if (transition.getInitialState() == currentState && transition.getSymbol() == symbol)
+			if (transition.getInitialState().equals(currentState) && transition.getSymbol() == symbol)
 			{
 				return transition.getNextState();
 			}
